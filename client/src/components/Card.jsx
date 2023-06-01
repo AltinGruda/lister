@@ -1,12 +1,15 @@
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import createList from "../utils/createList";
 const Card = () => {
   const [listParams, setListParams] = useState({
     title: "",
     description: "",
   });
-  const result = useQuery(["create", listParams], createList);
+  const { mutate, isLoading, isError, isSuccess } = useMutation(
+    createList,
+    listParams
+  );
 
   return (
     <div className="card w-96 bg-base-100 shadow-xl flex items-center flex-col">
@@ -20,6 +23,7 @@ const Card = () => {
             description: formData.get("description") ?? "",
           };
           setListParams(obj);
+          mutate(obj);
         }}
       >
         <p className="card-title">Title:</p>
@@ -36,9 +40,14 @@ const Card = () => {
           name="description"
         ></textarea>
         <div className="card-actions">
-          <button className="btn btn-primary">Create</button>
+          <button className="btn btn-primary" disabled={isLoading}>
+            Create
+          </button>
         </div>
       </form>
+      {isLoading && <div>Loading...</div>}
+      {isError && <div>Error occurred</div>}
+      {isSuccess && <div>Success!</div>}
     </div>
   );
 };
