@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Create from "./pages/Create";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import ListItem from "./components/ListItem";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -21,6 +22,7 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/create" element={<Create />} />
+            <Route path="/list/:id" element={<ListItem />} />
           </Routes>
         </QueryClientProvider>
       </BrowserRouter>
