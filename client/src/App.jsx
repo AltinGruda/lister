@@ -1,14 +1,17 @@
 import { createRoot } from "react-dom/client";
-import Navbar from "./components/Navbar";
-import Card from "./components/Card";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import Create from "./pages/Create";
 
 const App = () => {
   return (
     <div>
-      <Navbar />
-      <div className="flex items-center justify-center">
-        <Card />
-      </div>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/create" element={<Create />} />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 };
