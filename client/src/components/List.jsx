@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 const List = ({ list }) => {
   return (
-    <div className="flex items-center justify-center">
+    <div className="flex items-center justify-center flex-col gap-2">
       {list?.map((item) => (
         <div key={item._id}>
           <Link to={`/list/${item._id}`}>
