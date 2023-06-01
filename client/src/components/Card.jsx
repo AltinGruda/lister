@@ -1,7 +1,7 @@
 const Card = () => {
   return (
     <div className="card w-96 bg-base-100 shadow-xl flex items-center">
-      <div className="card-body items-center text-center">
+      <form className="card-body items-center text-center">
         <p className="card-title">Title:</p>
         <input
           type="text"
@@ -16,7 +16,7 @@ const Card = () => {
         <div className="card-actions">
           <button className="btn btn-primary">Create</button>
         </div>
-      </div>
+      </form>
     </div>
   );
 };
