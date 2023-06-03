@@ -4,6 +4,10 @@ import Home from "./pages/Home";
 import Create from "./pages/Create";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import ListItem from "./components/ListItem";
+import { Toaster } from "react-hot-toast";
+import PrivateRoutes from "./utils/PrivateRoutes";
+import Context, { myContext } from "./store/Context";
+import { useContext } from "react";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -15,14 +19,19 @@ const queryClient = new QueryClient({
 });
 
 const App = () => {
+  const userObject = useContext(myContext);
+  console.log(userObject);
   return (
     <div>
       <BrowserRouter>
         <QueryClientProvider client={queryClient}>
+          <Toaster />
           <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/create" element={<Create />} />
-            <Route path="/list/:id" element={<ListItem />} />
+            <Route element={<Home />} path="/" />
+            <Route element={<PrivateRoutes />}>
+              <Route element={<Create />} path="/create" />
+              <Route element={<ListItem />} path="/list/:id" />
+            </Route>
           </Routes>
         </QueryClientProvider>
       </BrowserRouter>
@@ -32,4 +41,8 @@ const App = () => {
 
 const container = document.getElementById("root");
 const root = createRoot(container);
-root.render(<App />);
+root.render(
+  <Context>
+    <App />
+  </Context>
+);

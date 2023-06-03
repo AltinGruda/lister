@@ -1,16 +1,13 @@
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import createList from "../utils/createList";
+
 const Card = () => {
   const [listParams, setListParams] = useState({
     title: "",
     description: "",
   });
-  const { mutate, isLoading, isError, isSuccess } = useMutation(
-    createList,
-    listParams
-  );
-
+  const { mutate, isLoading } = useMutation(createList, listParams);
   return (
     <div className="card w-96 bg-base-100 shadow-xl flex items-center flex-col">
       <form
@@ -40,14 +37,11 @@ const Card = () => {
           name="description"
         ></textarea>
         <div className="card-actions">
-          <button className="btn btn-primary" disabled={isLoading}>
+          <button className="btn btn-success" disabled={isLoading}>
             Create
           </button>
         </div>
       </form>
-      {isLoading && <div>Loading...</div>}
-      {isError && <div>Error occurred</div>}
-      {isSuccess && <div>Success!</div>}
     </div>
   );
 };
