@@ -3,38 +3,67 @@ const mongoose = require('mongoose')
 const User = require('../models/User')
 
 module.exports = function (passport) {
-  passport.use(
-    new GoogleStrategy(
-      {
-        clientID: process.env.CLIENT_ID,
-        clientSecret: process.env.CLIENT_SECRET,
-        callbackURL: '/auth/google/callback',
-        scope: ["profile", "email"],
-      },
-      async (accessToken, refreshToken, profile, done) => {
-        const newUser = {
-          googleId: profile.id,
-          displayName: profile.displayName,
-          firstName: profile.name.givenName,
-          lastName: profile.name.familyName,
-          image: profile.photos[0].value,
+  passport.use(new GoogleStrategy({
+    clientID: `${process.env.CLIENT_ID}`,
+    clientSecret: `${process.env.CLIENT_SECRET}`,
+    callbackURL: "/auth/google/callback"
+  },
+    function (_, __, profile, cb) {
+  
+      User.findOne({ googleId: profile.id }, async (err, doc) => {
+  
+        if (err) {
+          return cb(err, null);
         }
-
-        try {
-          let user = await User.findOne({ googleId: profile.id })
-
-          if (user) {
-            done(null, user)
-          } else {
-            user = await User.create(newUser)
-            done(null, user)
-          }
-        } catch (err) {
-          console.error(err)
+  
+        if (!doc) {
+          const newUser = new User({
+            googleId: profile.id,
+            displayName: profile.displayName,
+            firstName: profile.name.givenName,
+            lastName: profile.name.familyName,
+            image: profile.photos[0].value,
+          });
+  
+          await newUser.save();
+          cb(null, newUser);
         }
-      }
-    )
-  )
+        cb(null, doc);
+      })
+  
+    }));
+  // passport.use(
+  //   new GoogleStrategy(
+  //     {
+  //       clientID: process.env.CLIENT_ID,
+  //       clientSecret: process.env.CLIENT_SECRET,
+  //       callbackURL: '/auth/google/callback',
+  //       scope: ["profile", "email"],
+  //     },
+  //     async (accessToken, refreshToken, profile, done) => {
+  //       const newUser = {
+  //         googleId: profile.id,
+  //         displayName: profile.displayName,
+  //         firstName: profile.name.givenName,
+  //         lastName: profile.name.familyName,
+  //         image: profile.photos[0].value,
+  //       }
+
+  //       try {
+  //         let user = await User.findOne({ googleId: profile.id })
+
+  //         if (user) {
+  //           done(null, user)
+  //         } else {
+  //           user = await User.create(newUser)
+  //           done(null, user)
+  //         }
+  //       } catch (err) {
+  //         console.error(err)
+  //       }
+  //     }
+  //   )
+  // )
 
   passport.serializeUser((user, done) => {
     done(null, user.id)
