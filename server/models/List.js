@@ -8,11 +8,10 @@ const ListSchema = new mongoose.Schema({
     description: {
         type: String,
     },
-    // add this when you do authentication to connect a list to a user
-    // userId: {
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: "User",
-    // },
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+    },
     createdAt: {
         type: Date,
         default: Date.now,
