@@ -8,27 +8,34 @@ module.exports = function (passport) {
     clientSecret: `${process.env.CLIENT_SECRET}`,
     callbackURL: "/auth/google/callback"
   },
-    function (_, __, profile, cb) {
+    function (_, __, profile, done) {
   
-      User.findOne({ googleId: profile.id }, async (err, doc) => {
+      User.findOne({ googleId: profile.id }, async (err, user) => {
   
         if (err) {
-          return cb(err, null);
+          return done(err, null);
         }
+
+        // if (user) {
+        //   done(null, user)
+        // } else {
+        //   user = User.create(newUser)
+        //   done(null, user)
+        // }
   
-        if (!doc) {
-          const newUser = new User({
+        if (!user) {
+          const newUser = {
             googleId: profile.id,
             displayName: profile.displayName,
             firstName: profile.name.givenName,
             lastName: profile.name.familyName,
             image: profile.photos[0].value,
-          });
+          };
   
-          await newUser.save();
-          cb(null, newUser);
+          user = await User.create(newUser);
+          done(null, user);
         }
-        cb(null, doc);
+        done(null, user);
       })
   
     }));
