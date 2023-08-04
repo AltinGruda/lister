@@ -4,8 +4,10 @@ This app is a web application with the purpose of displaying a list of YouTube C
 You can create a list, and celecting your preferred channels instantly populates your personalized playlist with the latest videos from those sources.
 
 When you click at one of the lists you created, you'll see a list of video cards, each representing a YouTube video. These cards display the video's thumbnail, title, channel name, and publication date. You can also see a default video card with placeholder content.
-
+![image](https://github.com/AltinGruda/lister/assets/67205874/ed460607-4151-4196-a1c8-7eb757949205)
+![image](https://github.com/AltinGruda/lister/assets/67205874/44c25421-c1c5-4d79-b286-21dafef7ba23)
 When you click on a video card, a modal window pops up, showcasing the selected video in a larger view. The modal includes an embedded YouTube video player that adjusts its size to fit the modal's dimensions. You can watch the video right within the modal without leaving the page.
+![image](https://github.com/AltinGruda/lister/assets/67205874/86e60e0b-5cc1-4a47-a037-74f5883775b9)
 
 **Tech used:** React, React Query, Tailwind, Nodejs, Mongodb
 
