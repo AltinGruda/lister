@@ -1,11 +1,13 @@
 import axios from "axios";
 import toast from "react-hot-toast";
+
 async function createList(data) {
-  const { title, description } = data;
+  const { title, description, channel } = data;
 
   const res = axios.post(`http://localhost:5000/createList`, {
     title,
     description,
+    channel,
   });
 
   toast.promise(res, {

@@ -5,22 +5,14 @@ import Create from "./pages/Create";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import ListItem from "./components/ListItem";
 import { Toaster } from "react-hot-toast";
-import PrivateRoutes from "./utils/PrivateRoutes";
-import Context, { myContext } from "./store/Context";
-import { useContext } from "react";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: Infinity,
-      cacheTime: Infinity,
-    },
-  },
-});
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+
+const queryClient = new QueryClient();
 
 const App = () => {
-  const userObject = useContext(myContext);
-  console.log(userObject);
   return (
     <div>
       <BrowserRouter>
@@ -28,11 +20,12 @@ const App = () => {
           <Toaster />
           <Routes>
             <Route element={<Home />} path="/" />
-            <Route element={<PrivateRoutes />}>
-              <Route element={<Create />} path="/create" />
-              <Route element={<ListItem />} path="/list/:id" />
-            </Route>
+            <Route element={<Login />} path="/login" />
+            <Route element={<Register />} path="/register" />
+            <Route element={<Create />} path="/create" />
+            <Route element={<ListItem />} path="/list/:id" />
           </Routes>
+          <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
       </BrowserRouter>
     </div>
@@ -41,8 +34,4 @@ const App = () => {
 
 const container = document.getElementById("root");
 const root = createRoot(container);
-root.render(
-  <Context>
-    <App />
-  </Context>
-);
+root.render(<App />);

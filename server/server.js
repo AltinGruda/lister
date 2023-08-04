@@ -7,48 +7,43 @@ const connectDb = require('./config/database')
 const listRoutes = require('./routes/listRoutes')
 const cors = require('cors');
 const passport = require("passport");
-const authRoutes = require('./routes/authRoutes')
 const mongoose = require('mongoose');
+const List = require('./models/List')
 
 require("dotenv").config({ path: "./config/.env" });
-
-require('./config/passport')(passport)
 
 connectDb();
 
 app.use(
-	cors({
-		origin: "http://localhost:5173",
-		methods: "GET,POST,PUT,DELETE",
-		credentials: true,
-	})
-);
+    cors({
+      origin: 'http://localhost:5173',
+      methods: 'GET,POST,PUT,DELETE',
+      credentials: true,
+    })
+  );
 
-app.use(express.urlencoded({ extended: true }))
+app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
 
 
 // Setup Sessions - stored in MongoDB
 app.use(
     session({
-        secret: "keyboard cat",
-        resave: false,
-        saveUninitialized: false,
-        store: new MongoStore({ mongooseConnection: mongoose.connection }),
-    },
-    {
-        secret: 'secret',
-        saveUninitialized: true,
-        resave: true
+      secret: "keyboard cat",
+      resave: false,
+      saveUninitialized: false,
+      store: new MongoStore({ mongooseConnection: mongoose.connection }),
     })
-);
+  );
 
 // Passport middleware
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use(express.json());
+
+
 app.use('/', listRoutes)
-app.use('/auth', authRoutes)
 
 app.listen(process.env.PORT, () => [
     console.log(`Server is running at ${process.env.PORT}`)
